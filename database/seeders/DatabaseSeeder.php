@@ -6,6 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,11 +15,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(SellerSeeder::class);
-        $parameters = [
-            '--personal' => true,
-            '--name' => 'Personal Access Client',
-        ];
-        Artisan::call('passport:client', $parameters);
+        $this->call([
+            SellerSeeder::class,
+            PaymentMethodSeeder::class,
+        ]);
+        $clientName = 'Personal Access Client';
+        $clientExists = DB::table('oauth_clients')->where('name', $clientName)->exists();
+        if (!$clientExists) {
+            $parameters = [
+                '--personal' => true,
+                '--name' => $clientName,
+            ];
+            Artisan::call('passport:client', $parameters);
+        }
     }
 }

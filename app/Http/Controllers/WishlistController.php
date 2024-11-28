@@ -63,19 +63,19 @@ class WishlistController extends Controller
      */
     public function show(Wishlist $wishlist)
     {
-        try {
-            $wishlist = $this->wishlistService->show($wishlist);
-            return response()->json([
-                'success' => true,
-                'message' => 'Berhasil',
-                'data' => $wishlist,
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal',
-            ], 500);
-        }
+        // try {
+        //     $wishlist = $this->wishlistService->show($wishlist);
+        //     return response()->json([
+        //         'success' => true,
+        //         'message' => 'Berhasil',
+        //         'data' => $wishlist,
+        //     ], 200);
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Gagal',
+        //     ], 500);
+        // }
     }
 
     /**
@@ -91,18 +91,18 @@ class WishlistController extends Controller
      */
     public function update(Request $request, Wishlist $wishlist)
     {
-        try {
-            $this->wishlistService->update($request->all(), $wishlist);
-            return response()->json([
-                'success' => true,
-                'message' => 'Berhasil',
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal',
-            ], 500);
-        }
+        // try {
+        //     $this->wishlistService->update($request->all(), $wishlist);
+        //     return response()->json([
+        //         'success' => true,
+        //         'message' => 'Berhasil',
+        //     ], 200);
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Gagal',
+        //     ], 500);
+        // }
     }
 
     /**

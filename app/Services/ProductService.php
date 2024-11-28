@@ -29,6 +29,7 @@ class ProductService
             ->when($search, function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%{$search}%");
             })
+            ->orderBy('name', 'asc')
             ->paginate($page);
         return $products;
     }

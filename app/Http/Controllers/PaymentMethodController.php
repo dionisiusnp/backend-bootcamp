@@ -37,18 +37,18 @@ class PaymentMethodController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $this->paymentMethodService->create($request->all());
-            return response()->json([
-                'success' => true,
-                'message' => 'Berhasil',
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal',
-            ], 500);
-        }
+        // try {
+        //     $this->paymentMethodService->create($request->all());
+        //     return response()->json([
+        //         'success' => true,
+        //         'message' => 'Berhasil',
+        //     ], 200);
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Gagal',
+        //     ], 500);
+        // }
     }
 
     /**
@@ -56,19 +56,19 @@ class PaymentMethodController extends Controller
      */
     public function show(PaymentMethod $paymentMethod)
     {
-        try {
-            $paymentMethod = $this->paymentMethodService->show($paymentMethod);
-            return response()->json([
-                'success' => true,
-                'message' => 'Berhasil',
-                'data' => $paymentMethod,
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal',
-            ], 500);
-        }
+        // try {
+        //     $paymentMethod = $this->paymentMethodService->show($paymentMethod);
+        //     return response()->json([
+        //         'success' => true,
+        //         'message' => 'Berhasil',
+        //         'data' => $paymentMethod,
+        //     ], 200);
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Gagal',
+        //     ], 500);
+        // }
     }
 
     /**
@@ -84,18 +84,18 @@ class PaymentMethodController extends Controller
      */
     public function update(Request $request, PaymentMethod $paymentMethod)
     {
-        try {
-            $this->paymentMethodService->update($request->all(), $paymentMethod);
-            return response()->json([
-                'success' => true,
-                'message' => 'Berhasil',
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal',
-            ], 500);
-        }
+        // try {
+        //     $this->paymentMethodService->update($request->all(), $paymentMethod);
+        //     return response()->json([
+        //         'success' => true,
+        //         'message' => 'Berhasil',
+        //     ], 200);
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Gagal',
+        //     ], 500);
+        // }
     }
 
     /**
@@ -103,17 +103,17 @@ class PaymentMethodController extends Controller
      */
     public function destroy(PaymentMethod $paymentMethod)
     {
-        try {
-            $this->paymentMethodService->destroy($paymentMethod);
-            return response()->json([
-                'success' => true,
-                'message' => 'Berhasil',
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal',
-            ], 500);
-        }
+        // try {
+        //     $this->paymentMethodService->destroy($paymentMethod);
+        //     return response()->json([
+        //         'success' => true,
+        //         'message' => 'Berhasil',
+        //     ], 200);
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Gagal',
+        //     ], 500);
+        // }
     }
 }

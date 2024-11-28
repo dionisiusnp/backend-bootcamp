@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\OrderItem;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -22,15 +23,12 @@ class OrderItemService
         return $this->model;
     }
 
-    public function paginate($filter, $page): LengthAwarePaginator
+    public function paginate($order_id): Collection
     {
-        $search = $filter['q'] ?? '';
         $orderItems = $this->model
-            ->when($search, function ($q) use ($search) {
-                $q->where('order_id', 'LIKE', "%{$search}%");
-            })
+            ->where('order_id', $order_id)
             ->orderBy('created_at', 'asc')
-            ->paginate($page);
+            ->get();
         return $orderItems;
     }
 

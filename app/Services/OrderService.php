@@ -49,7 +49,7 @@ class OrderService
             ->when($search, function ($q) use ($search) {
                 $q->where('id', 'LIKE', "%{$search}%");
             })
-            ->orderBy('created_at', 'asc')
+            ->orderBy('created_at', 'desc')
             ->paginate($page);
         return $orders;
     }
@@ -70,6 +70,7 @@ class OrderService
     public function create(array $data)
     {
         try {
+            $data['buyer_id'] = $data['buyer_id'] ?? auth()->user()->id;
             $order = $this->model->create($data);
             return $order;
         } catch (\Throwable $th) {
