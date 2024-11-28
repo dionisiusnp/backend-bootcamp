@@ -55,6 +55,11 @@ class ChatService
     public function create(array $data)
     {
         try {
+            if (auth()->user()->is_seller === true) {
+                $data['is_seller_reply'] = true;
+            } else {
+                $data['is_seller_reply'] = false;
+            }
             $chats = $this->model->create($data);
             return $chats;
         } catch (\Throwable $th) {

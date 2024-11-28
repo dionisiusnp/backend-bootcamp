@@ -19,9 +19,9 @@ class OrderItemController extends Controller
      */
     public function index(Request $request)
     {
-        $filter = $request->only(['q']);
-        $orderItems = $this->orderItemService->paginate($filter, 10);
-        return response()->json($orderItems->withQueryString());
+        $filter = $request->only(['order_id']);
+        $orderItems = $this->orderItemService->paginate($filter);
+        return response()->json($orderItems);
     }
 
     /**

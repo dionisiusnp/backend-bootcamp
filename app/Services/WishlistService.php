@@ -32,6 +32,7 @@ class WishlistService
             ->when($search, function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%{$search}%");
             })
+            ->orderBy('created_at', 'desc')
             ->paginate($page);
         return $wishlists;
     }
@@ -41,16 +42,16 @@ class WishlistService
         $userId = auth()->user()->id;
 
         $wishlist = $this->model
-            ->where('product_id', $product_id)
             ->where('buyer_id', $userId)
+            ->where('product_id', $product_id)
             ->first();
-
         return $wishlist;
     }
 
     public function create(array $data)
     {
         try {
+            $data['buyer_id'] = $data['buyer_id'] ?? auth()->user()->id;
             $wishlist = $this->model->create($data);
             return $wishlist;
         } catch (\Throwable $th) {
