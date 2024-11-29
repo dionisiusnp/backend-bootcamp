@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Chat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class ChatService
 {
@@ -42,13 +43,21 @@ class ChatService
         $search = $filter['q'] ?? '';
 
         $chats = $this->model
-            ->select('user_id', 'message', 'created_at')
+            ->select(
+                'user_id',
+                DB::raw('MAX(created_at) as latest_message_time'),
+                DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(message ORDER BY created_at DESC), ",", 1) as latest_message'),
+                )
+            ->with('userable')
             ->where('is_seller_reply', false)
             ->when($search, function ($q) use ($search) {
-                $q->where('message', 'LIKE', "%{$search}%");
+                $q->where('chats.message', 'LIKE', "%{$search}%")
+                  ->orWhereHas('userable', function ($query) use ($search) {
+                      $query->where('name', 'LIKE', "%{$search}%");
+                  });
             })
             ->groupBy('user_id')
-            ->orderBy('created_at', 'asc');
+            ->orderBy('latest_message_time', 'desc');
         return $chats->paginate($page);
     }
 
