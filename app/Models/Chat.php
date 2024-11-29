@@ -15,4 +15,9 @@ class Chat extends Model
         'message',
         'is_seller_reply',
     ];
+
+    public function userable()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
