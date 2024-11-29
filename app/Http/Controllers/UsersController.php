@@ -140,6 +140,7 @@ class UsersController extends Controller
         return response()->json([
             'success' => true,
             'token' => $token->accessToken,
+            'user' => $user->is_seller
         ], 200);
     }
 }
