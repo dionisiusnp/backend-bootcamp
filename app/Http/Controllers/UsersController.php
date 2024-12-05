@@ -60,7 +60,6 @@ class UsersController extends Controller
     public function show(User $user)
     {
         try {
-            $user = $this->usersService->show($user);
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil',
