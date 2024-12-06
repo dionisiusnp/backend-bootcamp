@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Chat;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -23,18 +24,14 @@ class ChatService
         return $this->model;
     }
 
-    public function paginate($filter, $page): LengthAwarePaginator
+    public function paginate($filter): Collection
     {
-        $search = $filter['q'] ?? '';
         $userId = $filter['user_id'] ?? auth()->user()->id;
 
         $chats = $this->model
             ->where('user_id', $userId)
-            ->when($search, function ($q) use ($search) {
-                $q->where('message', 'LIKE', "%{$search}%");
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate($page);
+            ->orderBy('created_at', 'asc')
+            ->get();
         return $chats;
     }
 
@@ -49,7 +46,7 @@ class ChatService
                 DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(message ORDER BY created_at DESC), ",", 1) as latest_message'),
                 )
             ->with('userable')
-            ->where('is_seller_reply', false)
+            // ->where('is_seller_reply', false)
             ->when($search, function ($q) use ($search) {
                 $q->where('chats.message', 'LIKE', "%{$search}%")
                   ->orWhereHas('userable', function ($query) use ($search) {

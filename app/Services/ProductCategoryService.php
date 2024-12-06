@@ -76,6 +76,12 @@ class ProductCategoryService
     public function destroy(ProductCategory $productCategory): bool
     {
         try {
+            if ($productCategory->products()->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Kategori tidak dapat dihapus karena sedang digunakan dalam produk.',
+                ], 400);
+            }
             return $productCategory->delete();
         } catch (\Throwable $th) {
             throw new \ErrorException($th->getMessage());
