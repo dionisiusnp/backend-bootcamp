@@ -19,9 +19,9 @@ class ChatController extends Controller
      */
     public function index(Request $request)
     {
-        $filter = $request->only(['q', 'user_id']);
-        $chats = $this->chatService->paginate($filter, 10);
-        return response()->json($chats->withQueryString());
+        $filter = $request->only(['user_id']);
+        $chats = $this->chatService->paginate($filter);
+        return response()->json($chats);
     }
 
     public function indexSeller(Request $request)

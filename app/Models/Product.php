@@ -18,4 +18,9 @@ class Product extends Model
         'is_available',
         'product_category_id',
     ];
+
+    public function productCategory()
+    {
+        return $this->belongsTo(ProductCategory::class, 'product_category_id');
+    }
 }
