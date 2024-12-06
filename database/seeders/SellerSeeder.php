@@ -17,11 +17,11 @@ class SellerSeeder extends Seeder
         User::updateOrCreate(
             ['id' => 1],
             [
-                'name' => 'Dion',
-                'email' => 'dionisiusnandaa@gmail.com',
-                'password' => Hash::make('seller'),
+                'name' => 'Administrator',
+                'email' => 'admin@gmail.com',
+                'password' => Hash::make('password'),
                 'is_seller' => true,
-                'address' => 'Merr, Surabaya',
+                'address' => 'Dinamika, Surabaya',
                 'is_active' => true,
                 'inactive_reason' => null,
             ]

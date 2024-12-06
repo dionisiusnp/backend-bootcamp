@@ -26,6 +26,7 @@ class ProductService
     {
         $search = $filter['q'] ?? '';
         $products = $this->model
+            ->with('productCategory')
             ->when($search, function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%{$search}%");
             })
