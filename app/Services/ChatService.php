@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ChatService
 {
@@ -29,6 +30,7 @@ class ChatService
         $userId = $filter['user_id'] ?? auth()->user()->id;
 
         $chats = $this->model
+            ->with('userable')
             ->where('user_id', $userId)
             ->orderBy('created_at', 'asc')
             ->get();
@@ -46,7 +48,7 @@ class ChatService
                 DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(message ORDER BY created_at DESC), ",", 1) as latest_message'),
                 )
             ->with('userable')
-            // ->where('is_seller_reply', false)
+            ->where('is_seller_reply', false)
             ->when($search, function ($q) use ($search) {
                 $q->where('chats.message', 'LIKE', "%{$search}%")
                   ->orWhereHas('userable', function ($query) use ($search) {
@@ -61,13 +63,8 @@ class ChatService
     public function create(array $data)
     {
         try {
-            if (auth()->user()->is_seller === true) {
-                $data['is_seller_reply'] = true;
-            } else {
-                $data['is_seller_reply'] = false;
-            }
-            $chats = $this->model->create($data);
-            return $chats;
+            $chat = $this->model->create($data);
+            return $chat;
         } catch (\Throwable $th) {
             throw new \ErrorException($th->getMessage());
         }
