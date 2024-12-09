@@ -38,7 +38,10 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         try {
-            $this->productService->create($request->all());
+            $product = $this->productService->create($request->all());
+            if ($request->hasFile('image')) {
+                $product->addMedia($request->file('image'))->toMediaCollection('product_images');
+            }
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil',

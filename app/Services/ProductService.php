@@ -26,12 +26,19 @@ class ProductService
     {
         $search = $filter['q'] ?? '';
         $products = $this->model
-            ->with('productCategory')
+            ->with(['productCategory', 'media'])
             ->when($search, function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%{$search}%");
             })
             ->orderBy('name', 'asc')
             ->paginate($page);
+
+            $products->getCollection()->transform(function ($product) {
+                $product->media_urls = $product->getMedia('product_images')->map(function ($media) {
+                    return $media->getFullUrl();
+                });
+                return $product;
+            });
         return $products;
     }
 

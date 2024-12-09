@@ -24,13 +24,6 @@ class OrderController extends Controller
         return response()->json($orders->withQueryString());
     }
 
-    public function indexSeller(Request $request)
-    {
-        $filter = $request->only(['q']);
-        $orders = $this->orderService->paginateSeller($filter, 10);
-        return response()->json($orders->withQueryString());
-    }
-
     /**
      * Show the form for creating a new resource.
      */

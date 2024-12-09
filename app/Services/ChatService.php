@@ -27,13 +27,19 @@ class ChatService
 
     public function paginate($filter): Collection
     {
-        $userId = $filter['user_id'] ?? auth()->user()->id;
+        $userId = $filter['user_id'];
 
         $chats = $this->model
-            ->with('userable')
+            ->with(['userable', 'media'])
             ->where('user_id', $userId)
             ->orderBy('created_at', 'asc')
             ->get();
+
+            $chats->each(function ($chat) {
+                $chat->media_urls = $chat->getMedia('chat_images')->map(function ($media) {
+                    return $media->getFullUrl();
+                });
+            });
         return $chats;
     }
 
