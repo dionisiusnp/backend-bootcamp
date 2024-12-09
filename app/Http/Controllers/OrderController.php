@@ -38,7 +38,10 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         try {
-            $this->orderService->create($request->all());
+            $order = $this->orderService->create($request->all());
+            if ($request->hasFile('image')) {
+                $order->addMedia($request->file('image'))->toMediaCollection('order_images');
+            }
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil',
