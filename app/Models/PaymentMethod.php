@@ -15,4 +15,9 @@ class PaymentMethod extends Model
         'description',
         'is_available',
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

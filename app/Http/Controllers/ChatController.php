@@ -46,7 +46,10 @@ class ChatController extends Controller
     public function store(Request $request)
     {
         try {
-            $this->chatService->create($request->all());
+            $chat = $this->chatService->create($request->all());
+            if ($request->hasFile('image')) {
+                $chat->addMedia($request->file('image'))->toMediaCollection('chat_images');
+            }
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil',

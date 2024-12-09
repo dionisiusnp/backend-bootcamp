@@ -13,7 +13,6 @@ Route::middleware('auth:api')->group(function () {
     
     //SELLER
     Route::get('chat/seller', [\App\Http\Controllers\ChatController::class, 'indexSeller']);
-    Route::get('order/seller', [\App\Http\Controllers\OrderController::class, 'indexSeller']);
     Route::resource('payment-method', \App\Http\Controllers\PaymentMethodController::class)->only(['index']);
     Route::resource('product-category', \App\Http\Controllers\ProductCategoryController::class)->except(['create', 'edit']);
     Route::resource('product', \App\Http\Controllers\ProductController::class)->except(['create', 'edit']);
