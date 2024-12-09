@@ -13,9 +13,11 @@ class OrderItemService
      * Create a new class instance.
      */
     private Model $model;
-    public function __construct(OrderItem $orderItem)
+    public $orderService;
+    public function __construct(OrderItem $orderItem, OrderService $orderService)
     {
         $this->model = $orderItem;
+        $this->orderService = $orderService;
     }
 
     public function model(): OrderItem
@@ -35,7 +37,32 @@ class OrderItemService
     public function create(array $data)
     {
         try {
-            $orderItem = $this->model->create($data);
+            $order = $this->orderService->model()
+            ->where('buyer_id', $data['buyer_id'])
+            ->where('payment_method_id', null)
+            ->first();
+
+            if (!$order) {
+                $orderData = [
+                    'buyer_id' => $data['buyer_id'],
+                ];
+                $order = $this->orderService->create($orderData);
+            }
+
+            $existingItem = $this->model()
+                ->where('order_id', $order->id)
+                ->where('product_id', $data['product_id'])
+                ->first();
+
+            if ($existingItem) {
+                $existingItem->quantity += $data['quantity'];
+                $existingItem->total_sub = ($existingItem->quantity * $existingItem->price) + $existingItem->shipping_cost;
+                $existingItem->save();
+                $orderItem = $existingItem;
+            } else {
+                $data['order_id'] = $order->id;
+                $orderItem = $this->model()->create($data);
+            }
             return $orderItem;
         } catch (\Throwable $th) {
             throw new \ErrorException($th->getMessage());

@@ -16,9 +16,9 @@ return new class extends Migration
             $table->foreignId('buyer_id')->constrained('users');
             $table->foreignId('payment_method_id')->constrained('payment_methods');
             $table->integer('total_payment')->default(0);
-            $table->boolean('is_delivery')->default(true); //Diisi buyer
-            $table->boolean('is_payment')->default(false); //Diisi buyer
-            $table->boolean('is_accept')->default(false); //Diisi buyer
+            $table->boolean('is_delivery')->default(true);
+            $table->boolean('is_payment')->default(false);
+            $table->boolean('is_accept')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
