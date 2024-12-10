@@ -46,6 +46,9 @@ class ChatController extends Controller
     public function store(Request $request)
     {
         try {
+            $request->merge([
+                'is_seller_reply' => filter_var($request->input('is_seller_reply'), FILTER_VALIDATE_BOOLEAN),
+            ]);
             $chat = $this->chatService->create($request->all());
             if ($request->hasFile('image')) {
                 $chat->addMedia($request->file('image'))->toMediaCollection('chat_images');

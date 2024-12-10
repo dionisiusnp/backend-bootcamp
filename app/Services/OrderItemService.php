@@ -25,9 +25,24 @@ class OrderItemService
         return $this->model;
     }
 
+    public function cart($buyer_id): Collection
+    {
+        $orderItems = $this->model
+        ->with('order')
+        ->whereHas('order', function ($query) use ($buyer_id) {
+            $query->where('buyer_id', $buyer_id)
+                  ->whereNull('payment_method_id');
+        })
+        ->orderBy('created_at', 'asc')
+        ->get();
+        
+    return $orderItems;
+    }
+
     public function paginate($order_id): Collection
     {
         $orderItems = $this->model
+            ->with('order')
             ->where('order_id', $order_id)
             ->orderBy('created_at', 'asc')
             ->get();
@@ -61,6 +76,7 @@ class OrderItemService
                 $orderItem = $existingItem;
             } else {
                 $data['order_id'] = $order->id;
+                $data['total_sub'] = ($data['quantity'] * $data['price']) + $data['shipping_cost'];
                 $orderItem = $this->model()->create($data);
             }
             return $orderItem;
