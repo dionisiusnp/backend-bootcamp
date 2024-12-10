@@ -17,9 +17,15 @@ class OrderItemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function cart(Request $request)
     {
-        $filter = $request->only(['order_id']);
+        $filter = $request->only('buyer_id');
+        $orderItems = $this->orderItemService->cart($filter);
+        return response()->json($orderItems);
+    }
+     public function index(Request $request)
+    {
+        $filter = $request->only('order_id');
         $orderItems = $this->orderItemService->paginate($filter);
         return response()->json($orderItems);
     }

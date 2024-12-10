@@ -36,6 +36,11 @@ class Order extends Model implements HasMedia
         return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
     }
 
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public static function boot()
     {
         parent::boot();

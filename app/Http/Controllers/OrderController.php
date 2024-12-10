@@ -19,7 +19,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $filter = $request->only(['q', 'user_id']);
+        $filter = $request->only(['q', 'user_id', 'payment_method_id', 'is_payment', 'is_accept', 'is_delivery']);
         $orders = $this->orderService->paginate($filter, 10);
         return response()->json($orders->withQueryString());
     }

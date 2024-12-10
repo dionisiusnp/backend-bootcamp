@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             SellerSeeder::class,
+            BuyerSeeder::class,
             PaymentMethodSeeder::class,
         ]);
         $clientName = 'Personal Access Client';
