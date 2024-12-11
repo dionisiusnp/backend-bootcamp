@@ -15,11 +15,9 @@ class OrderService
      */
     private Model $model;
 
-    public $orderItemService;
-    public function __construct(Order $order, OrderItemService $orderItemService)
+    public function __construct(Order $order)
     {
         $this->model = $order;
-        $this->orderItemService = $orderItemService;
     }
 
     public function model(): Order
