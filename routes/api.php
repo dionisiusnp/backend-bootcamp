@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Middleware\DisableCors;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware([DisableCors::class])->group(function () {
     Route::post('register', [\App\Http\Controllers\UsersController::class, 'store']);
     Route::post('login', [\App\Http\Controllers\UsersController::class, 'login']);
 
@@ -27,4 +25,3 @@ Route::middleware([DisableCors::class])->group(function () {
         Route::resource('order-item', \App\Http\Controllers\OrderItemController::class)->except(['create', 'edit', 'update']);
         Route::get('cart', [\App\Http\Controllers\OrderItemController::class, 'cart']);
     });
-});
