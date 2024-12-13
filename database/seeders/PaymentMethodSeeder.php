@@ -16,14 +16,8 @@ class PaymentMethodSeeder extends Seeder
         $paymentMethods = [
             [
                 'id' => 1,
-                'type' => 'COD',
-                'description' => 'Cash on Delivery',
-                'is_available' => true,
-            ],
-            [
-                'id' => 2,
                 'type' => 'Bank Transfer',
-                'description' => 'Transfer melalui rekening bank',
+                'description' => 'Transfer melalui rekening Bank Penjual 12345',
                 'is_available' => true,
             ],
         ];
