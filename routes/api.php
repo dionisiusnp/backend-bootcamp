@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
     Route::post('register', [\App\Http\Controllers\UsersController::class, 'store']);
     Route::post('login', [\App\Http\Controllers\UsersController::class, 'login']);
 
-    Route::middleware(['auth:api'])->group(function () {
+    // Route::middleware(['auth:api'])->group(function () {
         //SELECT
         Route::get('select/product-categories', [App\Http\Controllers\SelectController::class, 'categories']);
         Route::get('select/payment-methods', [App\Http\Controllers\SelectController::class, 'payments']);
@@ -24,4 +24,5 @@ use Illuminate\Support\Facades\Route;
         Route::resource('order', \App\Http\Controllers\OrderController::class)->except(['create', 'store', 'edit']);
         Route::resource('order-item', \App\Http\Controllers\OrderItemController::class)->except(['create', 'edit', 'update']);
         Route::get('cart', [\App\Http\Controllers\OrderItemController::class, 'cart']);
-    });
+        Route::get('last-order', [\App\Http\Controllers\OrderController::class, 'lastOrder']);
+    // });

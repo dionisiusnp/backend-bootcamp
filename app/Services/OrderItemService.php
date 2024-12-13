@@ -28,7 +28,7 @@ class OrderItemService
     public function cart($buyer_id): Collection
     {
         $orderItems = $this->model
-        ->with('order')
+        ->with('order', 'product')
         ->whereHas('order', function ($query) use ($buyer_id) {
             $query->where('buyer_id', $buyer_id)
                   ->whereNull('payment_method_id');

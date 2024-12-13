@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -19,9 +20,16 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $filter = $request->only(['q', 'user_id', 'payment_method_id', 'is_payment', 'is_accept', 'is_delivery']);
+        $filter = $request->only(['buyer_id']);
         $orders = $this->orderService->paginate($filter, 10);
         return response()->json($orders->withQueryString());
+    }
+
+    public function lastOrder(Request $request)
+    {
+        $filter = $request->only(['buyer_id']);
+        $order = $this->orderService->lastOrder($filter);
+        return response()->json($order);
     }
 
     /**

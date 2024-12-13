@@ -133,7 +133,7 @@ class UsersController extends Controller
         }
 
         $auth = Auth::user();
-        $this->usersService->revokeToken($auth);
+        // $this->usersService->revokeToken($auth);
         $token = $this->usersService->createToken($auth,'Flutter Apps');
 
         return response()->json([

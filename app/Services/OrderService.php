@@ -7,6 +7,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class OrderService
 {
@@ -39,35 +40,12 @@ class OrderService
 
     public function paginate($filter, $page): LengthAwarePaginator
     {
-        $search = $filter['q'] ?? '';
-        $userId = $filter['user_id'] ?? null;
-        $paymentMethodId = $filter['payment_method_id'] ?? null;
-        $isPayment = $filter['is_payment'] ?? false;
-        $isAccept = $filter['is_accept'] ?? false;
-        $isDelivery = $filter['is_delivery'] ?? false;
+        $userId = $filter['buyer_id'] ?? null;
 
         $orders = $this->model
             ->with(['userable', 'media'])
             ->when($userId, function ($q) use ($userId) {
                 $q->where('buyer_id', $userId);
-            })
-            ->when($paymentMethodId, function ($q) use ($paymentMethodId) {
-                $q->where('payment_method_id', $paymentMethodId);
-            })
-            ->when($isPayment !== null, function ($q) use ($isPayment) {
-                $q->where('is_payment', $isPayment);
-            })
-            ->when($isAccept !== null, function ($q) use ($isAccept) {
-                $q->where('is_accept', $isAccept);
-            })
-            ->when($isDelivery !== null, function ($q) use ($isDelivery) {
-                $q->where('is_delivery', $isDelivery);
-            })
-            ->when($search, function ($q) use ($search) {
-                $q->whereHas('userable', function ($query) use ($search) {
-                    $query->where('name', 'LIKE', "%{$search}%");
-                });
-                $q->orWhere('id', 'LIKE', "%{$search}%");
             })
             ->orderBy('created_at', 'desc')
             ->paginate($page);
@@ -80,6 +58,20 @@ class OrderService
         });
 
         return $orders;
+    }
+
+    public function lastOrder($filter,)
+    {
+        $buyerId = $filter['buyer_id'] ?? null;
+        $order = $this->model
+            ->with('orderItems')
+            ->withSum('orderItems as total_payment', 'total_sub')
+            ->where('payment_method_id', null)
+            ->when($buyerId, function ($q) use ($buyerId) {
+                $q->where('buyer_id', $buyerId);
+            })
+            ->get()->first();
+        return $order;
     }
 
     public function create(array $data)
